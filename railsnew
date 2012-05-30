@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+  echo "Usage: railsnew {app-name}"
+  exit 1
+fi
+
+DIR=$(dirname "${BASH_SOURCE[0]}")
+DIR=$(cd -P $DIR && pwd)
+
+echo "================ Creating Application ================"
+rails new $1 -T
+cd $1
+
+echo "================ Setting up Gemfile ================"
+cat Gemfile | grep -v '^ *#' | grep -v '^$' > Gemfile.tmp
+rm Gemfile
+mv Gemfile.tmp Gemfile
+cat "$DIR/Gemfile" >> Gemfile
+
+bundle
+
+echo "================ Setting up RSpec ================"
+rails g rspec:install
+
+echo "================ Set SASS as the default ================"
+cd config/environments
+head development.rb --lines=-1 > development.rb.tmp
+echo "" >> development.rb.tmp
+echo "  config.sass.preferred_syntax = :sass" >> development.rb.tmp
+echo "end" >> development.rb.tmp
+rm development.rb
+mv development.rb.tmp development.rb
+cd ../..
