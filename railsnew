@@ -54,3 +54,11 @@ rm test.rb
 mv test.rb.tmp test.rb
 cd ../../
 
+echo "================ Setting up Capistrano ================"
+capify .
+sed "s/^ *# load 'deploy\/assets'/load 'deploy\/assets/" Capfile > Capfile.tmp
+rm Capfile
+mv Capfile.tmp Capfile
+cp -f "$DIR/deploy.rb" config/deploy.rb
+
+
