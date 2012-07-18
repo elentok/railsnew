@@ -44,15 +44,15 @@ rm development.rb
 mv development.rb.tmp development.rb
 cd ../../
 
-echo "================ Setting up Spork ================"
-spork --bootstrap
-cp -f "$DIR/spec_helper.rb" spec/
-echo "--colour --rdb" > .rspec
-cd config/environments
-sed 's/config\.cache_classes = true/config.cache_classes = false/' test.rb > test.rb.tmp
-rm test.rb
-mv test.rb.tmp test.rb
-cd ../../
+echo "================ Setting up Spork (Rspec) ================"
+spork rspec --bootstrap
+cp -f "$DIR/spec/spec_helper.rb" spec/
+echo "--colour --drb" > .rspec
+
+echo "================ Setting up Spork (Cucumber) ================"
+rails g cucumber:install
+spork cucumber --bootstrap
+cp -f $DIR/features/support/* features/support/
 
 echo "================ Setting up Capistrano ================"
 capify .
