@@ -1,17 +1,14 @@
 require 'spork'
 
 Spork.prefork do
+  ENV["RAILS_ENV"] ||= 'test'
+
   require 'debugger'
-  #uncomment the following line to use spork with the debugger
   require 'spork/ext/ruby-debug'
   require 'pry'
 
-  # Loading more in this block will cause your tests to run faster. However,
-  # if you change any configuration or code from libraries loaded here, you'll
-  # need to restart spork for it take effect.
-  
-  # This file is copied to spec/ when you run 'rails generate rspec:install'
-  ENV["RAILS_ENV"] ||= 'test'
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   require 'rspec/autorun'
@@ -47,8 +44,6 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
-  Dir.glob("#{::Rails.root}/app/models/*.rb").each { |file| load "#{file}" }
-  Dir.glob("#{::Rails.root}/spec/fabricators/*.rb").each { |file| load "#{file}" }
+  Fabrication.clear_definitions
 end
 
