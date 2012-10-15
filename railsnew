@@ -36,7 +36,7 @@ rails g simple_form:install --bootstrap
 
 echo "================ Set SASS as the default ================"
 cd config/environments
-head development.rb --lines=-1 > development.rb.tmp
+sed 's/^end$//' development.rb > development.rb.tmp
 echo "" >> development.rb.tmp
 echo "  config.sass.preferred_syntax = :sass" >> development.rb.tmp
 echo "end" >> development.rb.tmp
