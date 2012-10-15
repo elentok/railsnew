@@ -24,9 +24,9 @@ echo "================ Replacing application.html.erb with haml ================
 cp -f "$DIR/application.html.haml" app/views/layouts/
 rm app/views/layouts/application.html.erb
 
-echo "================ Convert application.css to sass ================"
-cp -f "$DIR/application.css.sass" app/assets/stylesheets/
-rm app/assets/stylesheets/application.css
+echo "================ Convert application.css to scss ================"
+cp -f "$DIR/application.css.scss" app/assets/stylesheets/
+rm app/assets/stylesheets/application.scss
 
 echo "================ Setting up RSpec ================"
 rails g rspec:install
@@ -34,15 +34,15 @@ rails g rspec:install
 echo "================ Setting up SimpleForm ================"
 rails g simple_form:install --bootstrap
 
-echo "================ Set SASS as the default ================"
-cd config/environments
-sed 's/^end$//' development.rb > development.rb.tmp
-echo "" >> development.rb.tmp
-echo "  config.sass.preferred_syntax = :sass" >> development.rb.tmp
-echo "end" >> development.rb.tmp
-rm development.rb
-mv development.rb.tmp development.rb
-cd ../../
+#echo "================ Set SASS as the default ================"
+#cd config/environments
+#sed 's/^end$//' development.rb > development.rb.tmp
+#echo "" >> development.rb.tmp
+#echo "  config.sass.preferred_syntax = :sass" >> development.rb.tmp
+#echo "end" >> development.rb.tmp
+#rm development.rb
+#mv development.rb.tmp development.rb
+#cd ../../
 
 echo "================ Setting up Spork (Rspec) ================"
 spork rspec --bootstrap
